@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=DM+Mono:ital,wght@0,400;0,500;0,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #07090f;
+  --panel:   #0c111d;
+  --card:    #111827;
+  --border:  #1e2d45;
+  --accent:  #f59e0b;
+  --text:    #e8eaf0;
+  --muted:   #4b617a;
+  --green:   #22c55e;
+  --red:     #ef4444;
+  --blue:    #60a5fa;
+}
+
+html, body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; min-height: 100vh; }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number] { -moz-appearance: textfield; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--panel); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
