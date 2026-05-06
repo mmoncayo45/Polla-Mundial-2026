@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
-import { MATCHES, GROUP_COLORS, ADMIN_PIN, isLocked, calcPoints } from '@/lib/data'
+import { supabase } from '../lib/supabase'
+import { MATCHES, GROUP_COLORS, ADMIN_PIN, isLocked, calcPoints } from '../lib/data'
 import styles from './page.module.css'
 
 // ─── SMALL UI ATOMS ──────────────────────────────────────────────────────────
