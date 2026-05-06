@@ -426,7 +426,12 @@ export default function App() {
     if (!existing) {
       const { data: created, error } = await supabase
         .from('players').insert({ name }).select().single()
-      if (error) { setLoading(false); return }
+      if (error) {
+  console.error(error)
+  alert(error.message)
+  setLoading(false)
+  return
+}
       existing = created
     }
 
