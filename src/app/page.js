@@ -736,7 +736,7 @@ export default function App() {
         </>}
 
         {tab==='apostadores' && <>
-          <SectionTitle>Apostadores registrados ({players.length})</SectionTitle>
+         <SectionTitle>Jugadores registrados ({players.length})</SectionTitle>
           {players.length===0
             ? <div style={{ textAlign:'center',padding:'40px',color:'#4b617a' }}>Nadie se ha registrado aún</div>
             : players.map((p,i) => {
