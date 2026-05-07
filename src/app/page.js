@@ -248,7 +248,7 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
   if (board.length === 0)
     return <div style={{ textAlign:'center',padding:'50px 20px',color:'#4b617a' }}>
       <div style={{ fontSize:'2.5rem',marginBottom:10 }}>🏆</div>
-      Aún no hay apostadores registrados
+      Aún no hay jugadores registrados
     </div>
 
   return (
