@@ -770,7 +770,6 @@ export default function App() {
         </>}
 
         {tab==='tabla' && (
-          {tab==='tabla' && (
   <div>
     <Leaderboard
       players={players}
