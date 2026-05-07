@@ -580,6 +580,32 @@ export default function App() {
               🔒 Los pronósticos se bloquean automáticamente 5 min antes del partido.
               Se guardan al instante en tiempo real.
             </div>
+            <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16,gap:12,flexWrap:'wrap' }}>
+  <button
+    onClick={() => {
+      alert('Pronósticos guardados correctamente ✅')
+      setScreen('login')
+      setPlayer(null)
+    }}
+    style={{
+      background:'#22c55e',
+      border:'none',
+      borderRadius:8,
+      padding:'10px 18px',
+      color:'#07110a',
+      fontFamily:'Oswald,sans-serif',
+      fontWeight:700,
+      fontSize:'0.85rem',
+      letterSpacing:'0.05em',
+      cursor:'pointer'
+    }}>
+    💾 GUARDAR Y VOLVER AL MENÚ
+  </button>
+
+  <div style={{ color:'#4b617a',fontSize:'0.72rem' }}>
+    Los cambios se guardan automáticamente
+  </div>
+</div>    
             <GroupFilter active={filterGroup} setActive={setFilterGroup} />
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
               {filteredMatches.map(m => {
