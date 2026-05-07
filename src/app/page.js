@@ -769,7 +769,7 @@ export default function App() {
           }
         </>}
 
-        {tab==='tabla' && (
+       {tab==='tabla' && (
   <div>
     <Leaderboard
       players={players}
@@ -830,13 +830,9 @@ export default function App() {
                   }}
                 >
                   <div>
-                    <strong>
-                      {match.home}
-                    </strong>
+                    <strong>{match.home}</strong>
                     {' vs '}
-                    <strong>
-                      {match.away}
-                    </strong>
+                    <strong>{match.away}</strong>
                   </div>
 
                   <div style={{ color:'#4b617a' }}>
@@ -871,8 +867,3 @@ export default function App() {
     </div>
   </div>
 )}
-        )}
-      </div>
-    </div>
-  )
-}
