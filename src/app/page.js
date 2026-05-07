@@ -708,7 +708,7 @@ export default function App() {
 </div>
       <TabBar tabs={[
         { id:'resultados', label:'⚽ Resultados' },
-        { id:'apostadores', label:'👥 Apostadores' },
+        { id:'apostadores', label:'👥 Jugadores' },
         { id:'tabla', label:'🏆 Tabla' },
       ]} />
       <div style={{ maxWidth:860,margin:'0 auto',padding:'20px 16px' }}>
