@@ -769,101 +769,105 @@ export default function App() {
           }
         </>}
 
-       {tab==='tabla' && (
-  <div>
-    <Leaderboard
-      players={players}
-      allPreds={allPreds}
-      results={results}
-    />
+        {tab==='tabla' && (
+          <div>
+            <Leaderboard
+              players={players}
+              allPreds={allPreds}
+              results={results}
+            />
 
-    <div style={{ marginTop:30 }}>
-      <SectionTitle>Detalle por jugador</SectionTitle>
+            <div style={{ marginTop:30 }}>
+              <SectionTitle>Detalle por jugador</SectionTitle>
 
-      {players.map(player => {
-        const preds = allPreds[player.id] || []
+              {players.map(player => {
+                const preds = allPreds[player.id] || []
 
-        return (
-          <div
-            key={player.id}
-            style={{
-              background:'#111827',
-              border:'1px solid #1e2d45',
-              borderRadius:12,
-              marginBottom:20,
-              overflow:'hidden'
-            }}
-          >
-            <div style={{
-              padding:'14px 18px',
-              borderBottom:'1px solid #1e2d45',
-              fontFamily:'Oswald,sans-serif',
-              fontWeight:700,
-              fontSize:'1rem',
-              color:'#f59e0b'
-            }}>
-              {player.name}
+                return (
+                  <div
+                    key={player.id}
+                    style={{
+                      background:'#111827',
+                      border:'1px solid #1e2d45',
+                      borderRadius:12,
+                      marginBottom:20,
+                      overflow:'hidden'
+                    }}
+                  >
+                    <div style={{
+                      padding:'14px 18px',
+                      borderBottom:'1px solid #1e2d45',
+                      fontFamily:'Oswald,sans-serif',
+                      fontWeight:700,
+                      fontSize:'1rem',
+                      color:'#f59e0b'
+                    }}>
+                      {player.name}
+                    </div>
+
+                    {MATCHES.map(match => {
+                      const pred = preds.find(
+                        p => p.match_id === match.id
+                      )
+
+                      const real = results.find(
+                        r => r.match_id === match.id
+                      )
+
+                      const pts = calcPoints(pred, real)
+
+                      return (
+                        <div
+                          key={match.id}
+                          style={{
+                            display:'grid',
+                            gridTemplateColumns:'1fr 110px 110px 70px',
+                            gap:10,
+                            padding:'10px 16px',
+                            borderBottom:'1px solid #1e2d4522',
+                            alignItems:'center',
+                            fontSize:'0.75rem'
+                          }}
+                        >
+                          <div>
+                            <strong>{match.home}</strong>
+                            {' vs '}
+                            <strong>{match.away}</strong>
+                          </div>
+
+                          <div style={{ color:'#4b617a' }}>
+                            Pred:
+                            {' '}
+                            <strong style={{ color:'#fff' }}>
+                              {pred?.home_goals ?? '-'}
+                              -
+                              {pred?.away_goals ?? '-'}
+                            </strong>
+                          </div>
+
+                          <div style={{ color:'#22c55e' }}>
+                            Real:
+                            {' '}
+                            <strong>
+                              {real?.home_goals ?? '-'}
+                              -
+                              {real?.away_goals ?? '-'}
+                            </strong>
+                          </div>
+
+                          <div>
+                            <PtsBadge pts={pts} />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })}
             </div>
-
-            {MATCHES.map(match => {
-              const pred = preds.find(
-                p => p.match_id === match.id
-              )
-
-              const real = results.find(
-                r => r.match_id === match.id
-              )
-
-              const pts = calcPoints(pred, real)
-
-              return (
-                <div
-                  key={match.id}
-                  style={{
-                    display:'grid',
-                    gridTemplateColumns:'1fr 110px 110px 70px',
-                    gap:10,
-                    padding:'10px 16px',
-                    borderBottom:'1px solid #1e2d4522',
-                    alignItems:'center',
-                    fontSize:'0.75rem'
-                  }}
-                >
-                  <div>
-                    <strong>{match.home}</strong>
-                    {' vs '}
-                    <strong>{match.away}</strong>
-                  </div>
-
-                  <div style={{ color:'#4b617a' }}>
-                    Pred:
-                    {' '}
-                    <strong style={{ color:'#fff' }}>
-                      {pred?.home_goals ?? '-'}
-                      -
-                      {pred?.away_goals ?? '-'}
-                    </strong>
-                  </div>
-
-                  <div style={{ color:'#22c55e' }}>
-                    Real:
-                    {' '}
-                    <strong>
-                      {real?.home_goals ?? '-'}
-                      -
-                      {real?.away_goals ?? '-'}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <PtsBadge pts={pts} />
-                  </div>
-                </div>
-              )
-            })}
           </div>
-        )
-      })}
+        )}
+      </div>
     </div>
-  </div>
-)}
+  )
+}
