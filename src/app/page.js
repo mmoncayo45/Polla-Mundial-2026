@@ -647,7 +647,65 @@ export default function App() {
   // ─── ADMIN VIEW ─────────────────────────────────────────────────────────
   return (
     <div style={{ minHeight:'100vh' }}>
-      <Header sub="Panel de administración" />
+     <div style={{
+  background:'linear-gradient(135deg,#0d1f3c,#07090f)',
+  borderBottom:'1px solid #1e2d45',
+  padding:'14px 20px',
+  position:'sticky',
+  top:0,
+  zIndex:100
+}}>
+  <div style={{
+    maxWidth:860,
+    margin:'0 auto',
+    display:'flex',
+    alignItems:'center',
+    gap:10
+  }}>
+    <span style={{ fontSize:'1.5rem' }}>⚽</span>
+
+    <div style={{ flex:1 }}>
+      <div style={{
+        fontFamily:'Oswald,sans-serif',
+        fontWeight:700,
+        fontSize:'1.1rem',
+        color:'#fff',
+        letterSpacing:'0.04em',
+        textTransform:'uppercase',
+        lineHeight:1
+      }}>
+        ADMIN — POLLA MUNDIAL 2026
+      </div>
+
+      <div style={{
+        color:'#4b617a',
+        fontSize:'0.6rem',
+        letterSpacing:'0.08em'
+      }}>
+        Panel de administración
+      </div>
+    </div>
+
+    <button
+      onClick={() => {
+        setScreen('login')
+        setPlayer(null)
+      }}
+      style={{
+        background:'#1e2d45',
+        border:'1px solid #4b617a',
+        borderRadius:8,
+        padding:'8px 14px',
+        color:'#e8eaf0',
+        cursor:'pointer',
+        fontFamily:'Oswald,sans-serif',
+        fontWeight:700,
+        fontSize:'0.75rem'
+      }}>
+      ← MENÚ PRINCIPAL
+    </button>
+  </div>
+</div>
       <TabBar tabs={[
         { id:'resultados', label:'⚽ Resultados' },
         { id:'apostadores', label:'👥 Apostadores' },
