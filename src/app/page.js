@@ -559,7 +559,11 @@ export default function App() {
   if (loading) return <Loader />
   if (screen === 'login') return <LoginScreen onPlayerLogin={handlePlayerLogin} onAdminLogin={handleAdminLogin} />
 
-  const filteredMatches = filterGroup==='ALL'?MATCHES:MATCHES.filter(m=>m.group===filterGroup)
+  const filteredMatches = (
+  filterGroup === 'ALL'
+    ? MATCHES
+    : MATCHES.filter(m => m.group === filterGroup)
+).sort((a, b) => new Date(a.date) - new Date(b.date))
 
   // ─── PLAYER VIEW ────────────────────────────────────────────────────────
   if (screen === 'player') {
