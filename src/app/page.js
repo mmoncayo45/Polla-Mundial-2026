@@ -95,7 +95,14 @@ function MatchRow({ match, homeVal, awayVal, onHomeChange, onAwayChange, locked,
         fontWeight:700,fontSize:'0.6rem',letterSpacing:'0.06em',flexShrink:0 }}>
         {match.group}
       </span>
-      <span style={{ color:'#4b617a',fontSize:'0.62rem',flexShrink:0 }}>{match.date}</span>
+      <span style={{ color:'#4b617a',fontSize:'0.62rem',flexShrink:0 }}>
+  {new Date(match.date).toLocaleString('es-CO', {
+    day:'2-digit',
+    month:'short',
+    hour:'2-digit',
+    minute:'2-digit'
+  })}
+</span>
 
       <div style={{ flex:1,display:'flex',alignItems:'center',gap:8,minWidth:200 }}>
         <span style={{ flex:1,textAlign:'right',fontSize:'0.78rem',lineHeight:1.3 }}>{match.home}</span>
