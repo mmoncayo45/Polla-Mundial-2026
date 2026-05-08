@@ -9,7 +9,13 @@ import styles from './page.module.css'
 function PtsBadge({ pts }) {
   if (pts === null || pts === undefined) return null
   const color = pts===3?'#f59e0b':pts>=2?'#22c55e':pts>=1?'#60a5fa':'#4b617a'
-  const label = pts===3?'⭐ 3':pts===2?'✅ 2':pts===1.5?'1.5':pts===1?'✓ 1':pts===0.5?'½':'0'
+  const label =
+  pts===5 ? '⭐ 5' :
+  pts===4 ? '4' :
+  pts===3 ? '✅ 3' :
+  pts===2 ? '✓ 2' :
+  pts===1 ? '⚽ 1' :
+  '0'
   return (
     <span style={{ background:`${color}22`, border:`1px solid ${color}55`, color,
       borderRadius:5, padding:'2px 8px', fontSize:'0.65rem', fontWeight:700, flexShrink:0 }}>
@@ -220,10 +226,9 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
         <div style={{ marginTop:20,background:'#0d1f0d',border:'1px solid #166534',
           borderRadius:10,padding:'14px 16px',fontSize:'0.72rem',color:'#86efac',lineHeight:1.9 }}>
           <strong>⚽ Sistema de puntos</strong><br/>
-          ⭐ 3 pts — Marcador exacto (ej: 2-1)<br/>
-          ✅ 2 pts — Resultado + ambos goles exactos<br/>
-          🔵 1 pt — Solo resultado correcto (G/E/P)<br/>
-          ⚡ +0.5 por cada equipo con goles exactos
+          ⭐ 5 pts — Marcador exacto<br/>
+          ✅ 2 pts — Resultado correcto (G/E/P)<br/>
+          ⚽ +1 pt — Por cada equipo con goles exactos<br/>
         </div>
       </div>
     </div>
