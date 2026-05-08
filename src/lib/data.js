@@ -106,14 +106,14 @@ export function calcPoints(pred, real) {
   const rh = real.home_goals
   const ra = real.away_goals
 
-  // Resultado exacto
+  // Marcador exacto
   if (ph === rh && pa === ra) {
     return 5
   }
 
   let points = 0
 
-  // Resultado correcto (G/E/P)
+  // Resultado correcto G/E/P
   const predResult =
     ph > pa ? 'H' :
     ph < pa ? 'A' :
@@ -128,11 +128,12 @@ export function calcPoints(pred, real) {
     points += 2
   }
 
-  // Goles exactos por equipo
+  // Gol exacto local
   if (ph === rh) {
     points += 1
   }
 
+  // Gol exacto visitante
   if (pa === ra) {
     points += 1
   }
