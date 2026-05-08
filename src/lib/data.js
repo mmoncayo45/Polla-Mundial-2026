@@ -89,16 +89,53 @@ export function isLocked(match) {
 
 // Scoring system
 export function calcPoints(pred, real) {
-  if (!pred || !real) return null
-  const ph = parseInt(pred.home_goals), pa = parseInt(pred.away_goals)
-  const rh = parseInt(real.home_goals), ra = parseInt(real.away_goals)
-  if ([ph,pa,rh,ra].some(isNaN)) return null
-  if (ph === rh && pa === ra) return 3
-  const rRes = rh>ra?"H":ra>rh?"A":"D"
-  const pRes = ph>pa?"H":pa>ph?"A":"D"
-  let pts = 0
-  if (pRes === rRes) pts += 1
-  if (ph === rh) pts += 0.5
-  if (pa === ra) pts += 0.5
-  return pts
+  if (
+    !pred ||
+    !real ||
+    pred.home_goals === null ||
+    pred.away_goals === null ||
+    real.home_goals === null ||
+    real.away_goals === null
+  ) {
+    return null
+  }
+
+  const ph = pred.home_goals
+  const pa = pred.away_goals
+
+  const rh = real.home_goals
+  const ra = real.away_goals
+
+  // Resultado exacto
+  if (ph === rh && pa === ra) {
+    return 5
+  }
+
+  let points = 0
+
+  // Resultado correcto (G/E/P)
+  const predResult =
+    ph > pa ? 'H' :
+    ph < pa ? 'A' :
+    'D'
+
+  const realResult =
+    rh > ra ? 'H' :
+    rh < ra ? 'A' :
+    'D'
+
+  if (predResult === realResult) {
+    points += 2
+  }
+
+  // Goles exactos por equipo
+  if (ph === rh) {
+    points += 1
+  }
+
+  if (pa === ra) {
+    points += 1
+  }
+
+  return points
 }
