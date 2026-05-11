@@ -133,225 +133,180 @@ function MatchRow({ match, homeVal, awayVal, onHomeChange, onAwayChange, locked,
 
 // ─── LOGIN SCREEN ─────────────────────────────────────────────────────────────
 function LoginScreen({ onPlayerLogin, onAdminLogin }) {
+
   const [name, setName] = useState('')
-  const [pin,setPin] = useState('')
+  const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function handlePlayer() {
 
-  if (!name.trim()) {
-    setError('Ingrese nombre')
-    return
-  }
-
-  if (!pin.trim()) {
-    setError('Ingrese PIN')
-    return
-  }
-
-  setLoading(true)
-  setError('')
-
-  try {
-
-    // Buscar jugador existente
-    const { data:existing, error:findError } =
-      await supabase
-        .from('players')
-        .select('*')
-        .eq('name', name.trim())
-        .maybeSingle()
-
-    if (findError) {
-      setError(findError.message)
-      setLoading(false)
+    if (!name.trim()) {
+      setError('Ingrese nombre')
       return
     }
 
-    // Crear nuevo jugador
-    if (!existing) {
+    if (!pin.trim()) {
+      setError('Ingrese PIN')
+      return
+    }
 
-      const { data:newPlayer, error:createError } =
+    setLoading(true)
+    setError('')
+
+    try {
+
+      const { data: existing, error: findError } =
         await supabase
           .from('players')
-          .insert({
-            name: name.trim(),
-            pin: pin
-          })
-          .select()
-          .single()
+          .select('*')
+          .eq('name', name.trim())
+          .maybeSingle()
 
-      if (createError) {
-        setError(createError.message)
+      if (findError) {
+        setError(findError.message)
         setLoading(false)
         return
       }
 
-      await onPlayerLogin(newPlayer.name)
+      if (!existing) {
 
-      setLoading(false)
-      return
+        const { data: newPlayer, error: createError } =
+          await supabase
+            .from('players')
+            .insert({
+              name: name.trim(),
+              pin: pin
+            })
+            .select()
+            .single()
+
+        if (createError) {
+          setError(createError.message)
+          setLoading(false)
+          return
+        }
+
+        await onPlayerLogin(newPlayer.name)
+
+        setLoading(false)
+        return
+      }
+
+      if (existing.pin !== pin) {
+        setError('PIN incorrecto')
+        setLoading(false)
+        return
+      }
+
+      await onPlayerLogin(existing.name)
+
+    } catch(err) {
+
+      setError(err.message)
+
     }
 
-    // Validar PIN
-    if (existing.pin !== pin) {
-      setError('PIN incorrecto')
-      setLoading(false)
-      return
-    }
-
-    await onPlayerLogin(existing.name)
-
-  } catch(err) {
-
-    setError(err.message)
-
+    setLoading(false)
   }
 
-  setLoading(false)
-}
-
   async function handleAdmin() {
-    if (pin !== ADMIN_PIN) { setError('PIN incorrecto'); return }
+
+    if (pin !== ADMIN_PIN) {
+      setError('PIN incorrecto')
+      return
+    }
+
     setLoading(true)
+
     await onAdminLogin()
+
     setLoading(false)
   }
 
   return (
-    <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:20 }}>
-      <div style={{ width:'100%',maxWidth:400 }}>
-        {/* Logo */}
-        <div style={{ textAlign:'center',marginBottom:36 }}>
-          <div style={{ fontSize:'3.5rem',marginBottom:8 }}>⚽</div>
-          <h1 style={{ fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:'2.2rem',
-            margin:0,letterSpacing:'0.05em',textTransform:'uppercase',color:'#fff' }}>
-            POLLA MUNDIAL
-          </h1>
-          <div style={{ color:'#4b617a',fontSize:'0.72rem',letterSpacing:'0.15em',marginTop:4 }}>
-            USA · CANADA · MEXICO 2026
-          </div>
+
+    <div style={{ maxWidth:420, margin:'40px auto' }}>
+
+      <div
+        style={{
+          background:'#0c111d',
+          border:'1px solid #1e2d45',
+          borderRadius:12,
+          padding:'20px',
+          marginBottom:12
+        }}
+      >
+
+        <div
+          style={{
+            fontFamily:'Oswald,sans-serif',
+            fontWeight:600,
+            fontSize:'0.65rem',
+            letterSpacing:'0.2em',
+            textTransform:'uppercase',
+            color:'#4b617a',
+            marginBottom:10
+          }}
+        >
+          Soy jugador
         </div>
 
-        {/* Player login */}
-        <div style={{ background:'#0c111d',border:'1px solid #1e2d45',borderRadius:12,padding:'20px',marginBottom:12 }}>
-          <div style={{ fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:'0.65rem',
-            letterSpacing:'0.2em',textTransform:'uppercase',color:'#4b617a',marginBottom:10 }}>
-            Soy apostador
+        <input
+          placeholder="Tu nombre..."
+          value={name}
+          onChange={e => {
+            setName(e.target.value)
+            setError('')
+          }}
+          style={{
+            width:'100%',
+            background:'#07090f',
+            border:'1px solid #1e2d45',
+            borderRadius:8,
+            padding:'10px 14px',
+            color:'#e8eaf0',
+            marginBottom:12
+          }}
+        />
+
+        <input
+          type="password"
+          placeholder="PIN"
+          value={pin}
+          onChange={e => {
+            setPin(e.target.value)
+            setError('')
+          }}
+          style={{
+            width:'100%',
+            background:'#07090f',
+            border:'1px solid #1e2d45',
+            borderRadius:8,
+            padding:'10px 14px',
+            color:'#e8eaf0',
+            marginBottom:12
+          }}
+        />
+
+        <button
+          onClick={handlePlayer}
+          disabled={!name.trim() || !pin.trim() || loading}
+        >
+          {loading ? 'ENTRANDO...' : 'ENTRAR A LA POLLA'}
+        </button>
+
+        {error && (
+          <div style={{ color:'#ef4444', marginTop:12 }}>
+            {error}
           </div>
-<input
-  placeholder="Tu nombre..."
-  value={name}
-  onChange={e => {
-    setName(e.target.value)
-    setError('')
-  }}
-  onKeyDown={e => e.key==='Enter' && handlePlayer()}
-  style={{
-    width:'100%',
-    background:'#07090f',
-    border:'1px solid #1e2d45',
-    borderRadius:8,
-    padding:'10px 14px',
-    color:'#e8eaf0',
-    fontFamily:'DM Mono,monospace',
-    fontSize:'0.9rem',
-    outline:'none',
-    marginBottom:12
-  }}
-/>
+        )}
 
-<input
-  type="password"
-  placeholder="PIN"
-  value={pin}
-  onChange={e => {
-    setPin(e.target.value)
-    setError('')
-  }}
-  onKeyDown={e => e.key==='Enter' && handlePlayer()}
-  style={{
-    width:'100%',
-    background:'#07090f',
-    border:'1px solid #1e2d45',
-    borderRadius:8,
-    padding:'10px 14px',
-    color:'#e8eaf0',
-    fontFamily:'DM Mono,monospace',
-    fontSize:'0.9rem',
-    outline:'none',
-    marginBottom:12
-  }}
-/>
-
-<button
-  onClick={handlePlayer}
-  disabled={!name.trim() || !pin.trim() || loading}
-  style={{
-    width:'100%',
-    background:name.trim() && pin.trim() && !loading
-      ? '#f59e0b'
-      : '#1e2d45',
-    border:'none',
-    borderRadius:8,
-    padding:'11px',
-    color:name.trim() && pin.trim() && !loading
-      ? '#07090f'
-      : '#4b617a',
-    fontFamily:'Oswald,sans-serif',
-    fontWeight:700,
-    fontSize:'0.95rem',
-    letterSpacing:'0.06em',
-    cursor:name.trim() && pin.trim() && !loading
-      ? 'pointer'
-      : 'not-allowed'
-  }}
->
-  {loading ? 'ENTRANDO...' : 'ENTRAR A LA POLLA →'}
-</button>
-        {/* Admin login */}
-        <div style={{ background:'#0c111d',border:'1px solid #1e2d45',borderRadius:12,padding:'20px' }}>
-          <div style={{ fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:'0.65rem',
-            letterSpacing:'0.2em',textTransform:'uppercase',color:'#4b617a',marginBottom:10 }}>
-            Soy administrador
-          </div>
-          <input
-            type="password"
-            placeholder="PIN de admin..."
-            value={pin}
-            onChange={e => { setPin(e.target.value); setError('') }}
-            onKeyDown={e => e.key==='Enter' && handleAdmin()}
-            style={{ width:'100%',background:'#07090f',border:'1px solid #1e2d45',
-              borderRadius:8,padding:'10px 14px',color:'#e8eaf0',
-              fontFamily:'DM Mono,monospace',fontSize:'0.9rem',outline:'none',marginBottom:12 }}
-          />
-          <button onClick={handleAdmin} disabled={!pin||loading}
-            style={{ width:'100%',background:'transparent',
-              border:`1px solid ${!pin||loading?'#1e2d45':'#4b617a'}`,
-              borderRadius:8,padding:'11px',
-              color: !pin||loading?'#4b617a':'#e8eaf0',
-              fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:'0.95rem',
-              letterSpacing:'0.06em',cursor: !pin||loading?'not-allowed':'pointer',
-              transition:'all 0.15s' }}>
-            PANEL DE ADMIN →
-          </button>
-          {error && <div style={{ color:'#ef4444',fontSize:'0.75rem',marginTop:8,textAlign:'center' }}>{error}</div>}
-        </div>
-
-        {/* Scoring info */}
-        <div style={{ marginTop:20,background:'#0d1f0d',border:'1px solid #166534',
-          borderRadius:10,padding:'14px 16px',fontSize:'0.72rem',color:'#86efac',lineHeight:1.9 }}>
-          <strong>⚽ Sistema de puntos</strong><br/>
-          ⭐ 5 pts — Marcador exacto<br/>
-          ✅ 2 pts — Resultado correcto (G/E/P)<br/>
-          ⚽ +1 pt — Por cada equipo con goles exactos<br/>
-        </div>
       </div>
-)
 
+    </div>
+  )
 }
-
 // ─── LEADERBOARD ─────────────────────────────────────────────────────────────
 function Leaderboard({ players, allPreds, results, currentPlayerId }) {
   const [expanded, setExpanded] = useState(null)
