@@ -156,6 +156,7 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
 
     try {
 
+      // Buscar jugador existente
       const { data: existing, error: findError } =
         await supabase
           .from('players')
@@ -169,6 +170,7 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
         return
       }
 
+      // Crear jugador nuevo
       if (!existing) {
 
         const { data: newPlayer, error: createError } =
@@ -193,6 +195,7 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
         return
       }
 
+      // Validar PIN
       if (existing.pin !== pin) {
         setError('PIN incorrecto')
         setLoading(false)
@@ -201,7 +204,7 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
 
       await onPlayerLogin(existing.name)
 
-    } catch(err) {
+    } catch (err) {
 
       setError(err.message)
 
@@ -212,12 +215,18 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
 
   async function handleAdmin() {
 
+    if (!pin.trim()) {
+      setError('Ingrese PIN admin')
+      return
+    }
+
     if (pin !== ADMIN_PIN) {
       setError('PIN incorrecto')
       return
     }
 
     setLoading(true)
+    setError('')
 
     await onAdminLogin()
 
@@ -226,85 +235,227 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
 
   return (
 
-    <div style={{ maxWidth:420, margin:'40px auto' }}>
+    <div
+      style={{
+        minHeight:'100vh',
+        background:'#07090f',
+        color:'#e8eaf0',
+        padding:'40px 20px'
+      }}
+    >
 
       <div
         style={{
-          background:'#0c111d',
-          border:'1px solid #1e2d45',
-          borderRadius:12,
-          padding:'20px',
-          marginBottom:12
+          maxWidth:420,
+          margin:'0 auto'
         }}
       >
 
+        {/* HEADER */}
         <div
           style={{
-            fontFamily:'Oswald,sans-serif',
-            fontWeight:600,
-            fontSize:'0.65rem',
-            letterSpacing:'0.2em',
-            textTransform:'uppercase',
-            color:'#4b617a',
-            marginBottom:10
+            textAlign:'center',
+            marginBottom:30
           }}
         >
-          Soy jugador
+
+          <div
+            style={{
+              fontFamily:'Oswald,sans-serif',
+              fontSize:'2.2rem',
+              fontWeight:700,
+              letterSpacing:'0.06em'
+            }}
+          >
+            ⚽ POLLA MUNDIAL
+          </div>
+
+          <div
+            style={{
+              color:'#86efac',
+              marginTop:6,
+              fontSize:'0.9rem'
+            }}
+          >
+            FIFA WORLD CUP 2026
+          </div>
+
         </div>
 
-        <input
-          placeholder="Tu nombre..."
-          value={name}
-          onChange={e => {
-            setName(e.target.value)
-            setError('')
-          }}
+        {/* PLAYER */}
+        <div
           style={{
-            width:'100%',
-            background:'#07090f',
+            background:'#0c111d',
             border:'1px solid #1e2d45',
-            borderRadius:8,
-            padding:'10px 14px',
-            color:'#e8eaf0',
-            marginBottom:12
+            borderRadius:12,
+            padding:'20px',
+            marginBottom:16
           }}
-        />
-
-        <input
-          type="password"
-          placeholder="PIN"
-          value={pin}
-          onChange={e => {
-            setPin(e.target.value)
-            setError('')
-          }}
-          style={{
-            width:'100%',
-            background:'#07090f',
-            border:'1px solid #1e2d45',
-            borderRadius:8,
-            padding:'10px 14px',
-            color:'#e8eaf0',
-            marginBottom:12
-          }}
-        />
-
-        <button
-          onClick={handlePlayer}
-          disabled={!name.trim() || !pin.trim() || loading}
         >
-          {loading ? 'ENTRANDO...' : 'ENTRAR A LA POLLA'}
-        </button>
 
+          <div
+            style={{
+              fontFamily:'Oswald,sans-serif',
+              fontWeight:600,
+              fontSize:'0.7rem',
+              letterSpacing:'0.2em',
+              textTransform:'uppercase',
+              color:'#4b617a',
+              marginBottom:12
+            }}
+          >
+            Jugador
+          </div>
+
+          <input
+            placeholder="Nombre"
+            value={name}
+            onChange={e => {
+              setName(e.target.value)
+              setError('')
+            }}
+            style={{
+              width:'100%',
+              background:'#07090f',
+              border:'1px solid #1e2d45',
+              borderRadius:8,
+              padding:'12px',
+              color:'#fff',
+              marginBottom:12
+            }}
+          />
+
+          <input
+            type="password"
+            placeholder="PIN"
+            value={pin}
+            onChange={e => {
+              setPin(e.target.value)
+              setError('')
+            }}
+            style={{
+              width:'100%',
+              background:'#07090f',
+              border:'1px solid #1e2d45',
+              borderRadius:8,
+              padding:'12px',
+              color:'#fff',
+              marginBottom:12
+            }}
+          />
+
+          <button
+            onClick={handlePlayer}
+            disabled={!name.trim() || !pin.trim() || loading}
+            style={{
+              width:'100%',
+              background:'#f59e0b',
+              border:'none',
+              borderRadius:8,
+              padding:'12px',
+              color:'#07090f',
+              fontWeight:700,
+              cursor:'pointer',
+              opacity:loading ? 0.7 : 1
+            }}
+          >
+            {loading ? 'ENTRANDO...' : 'ENTRAR A LA POLLA'}
+          </button>
+
+        </div>
+
+        {/* ADMIN */}
+        <div
+          style={{
+            background:'#0c111d',
+            border:'1px solid #1e2d45',
+            borderRadius:12,
+            padding:'20px',
+            marginBottom:16
+          }}
+        >
+
+          <div
+            style={{
+              fontFamily:'Oswald,sans-serif',
+              fontWeight:600,
+              fontSize:'0.7rem',
+              letterSpacing:'0.2em',
+              textTransform:'uppercase',
+              color:'#4b617a',
+              marginBottom:12
+            }}
+          >
+            Administrador
+          </div>
+
+          <button
+            onClick={handleAdmin}
+            style={{
+              width:'100%',
+              background:'#1e293b',
+              border:'none',
+              borderRadius:8,
+              padding:'12px',
+              color:'#fff',
+              fontWeight:700,
+              cursor:'pointer'
+            }}
+          >
+            ENTRAR ADMIN
+          </button>
+
+        </div>
+
+        {/* ERROR */}
         {error && (
-          <div style={{ color:'#ef4444', marginTop:12 }}>
+
+          <div
+            style={{
+              background:'#3f1518',
+              color:'#fecaca',
+              border:'1px solid #7f1d1d',
+              padding:'12px',
+              borderRadius:10,
+              marginBottom:16
+            }}
+          >
             {error}
           </div>
+
         )}
+
+        {/* SCORING */}
+        <div
+          style={{
+            marginTop:20,
+            background:'#0d1f0d',
+            border:'1px solid #166534',
+            borderRadius:10,
+            padding:'14px 16px',
+            fontSize:'0.72rem',
+            color:'#86efac',
+            lineHeight:1.9
+          }}
+        >
+
+          <strong>⚽ Sistema de puntos</strong>
+          <br/>
+
+          ⭐ 5 pts — Marcador exacto
+          <br/>
+
+          ✅ 2 pts — Resultado correcto (G/E/P)
+          <br/>
+
+          ⚽ +1 pt — Por cada equipo con goles exactos
+
+        </div>
 
       </div>
 
     </div>
+
   )
 }
 // ─── LEADERBOARD ─────────────────────────────────────────────────────────────
