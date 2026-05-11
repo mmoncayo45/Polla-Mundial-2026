@@ -388,7 +388,24 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
           >
             Administrador
           </div>
-
+            <input
+              type="password"
+              placeholder="PIN Admin"
+              value={pin}
+              onChange={e => {
+                setPin(e.target.value)
+                setError('')
+              }}
+              style={{
+                width:'100%',
+                background:'#07090f',
+                border:'1px solid #1e2d45',
+                borderRadius:8,
+                padding:'12px',
+                color:'#fff',
+                marginBottom:12
+              }}
+            />
           <button
             onClick={handleAdmin}
             style={{
