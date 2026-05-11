@@ -134,6 +134,7 @@ function MatchRow({ match, homeVal, awayVal, onHomeChange, onAwayChange, locked,
 // ─── LOGIN SCREEN ─────────────────────────────────────────────────────────────
 function LoginScreen({ onPlayerLogin, onAdminLogin }) {
   const [name, setName] = useState('')
+  const [pin,setPin] = useState('')
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
