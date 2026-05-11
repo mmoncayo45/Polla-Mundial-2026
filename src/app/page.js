@@ -240,16 +240,25 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
             letterSpacing:'0.2em',textTransform:'uppercase',color:'#4b617a',marginBottom:10 }}>
             Soy apostador
           </div>
-          <input
-            placeholder="Tu nombre..."
-              <input
-  placeholder="Nombre"
+<input
+  placeholder="Tu nombre..."
   value={name}
-  onChange={e=>setName(e.target.value)}
+  onChange={e => {
+    setName(e.target.value)
+    setError('')
+  }}
+  onKeyDown={e => e.key==='Enter' && handlePlayer()}
   style={{
     width:'100%',
-    padding:'14px',
-    borderRadius:10
+    background:'#07090f',
+    border:'1px solid #1e2d45',
+    borderRadius:8,
+    padding:'10px 14px',
+    color:'#e8eaf0',
+    fontFamily:'DM Mono,monospace',
+    fontSize:'0.9rem',
+    outline:'none',
+    marginBottom:12
   }}
 />
 
@@ -257,50 +266,50 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
   type="password"
   placeholder="PIN"
   value={pin}
-  onChange={e=>setPin(e.target.value)}
+  onChange={e => {
+    setPin(e.target.value)
+    setError('')
+  }}
+  onKeyDown={e => e.key==='Enter' && handlePlayer()}
   style={{
     width:'100%',
-    padding:'14px',
-    borderRadius:10,
+    background:'#07090f',
     border:'1px solid #1e2d45',
-    background:'#0f1724',
-    color:'#fff',
-    marginTop:12
+    borderRadius:8,
+    padding:'10px 14px',
+    color:'#e8eaf0',
+    fontFamily:'DM Mono,monospace',
+    fontSize:'0.9rem',
+    outline:'none',
+    marginBottom:12
   }}
 />
-          <input
-  type="password"
-  placeholder="PIN"
-  value={pin}
-  onChange={e=>setPin(e.target.value)}
-  style={{
-    width:'100%',
-    padding:'14px',
-    borderRadius:10,
-    border:'1px solid #1e2d45',
-    background:'#0f1724',
-    color:'#fff',
-    marginTop:12
-  }}
-/>
-            value={name}
-            onChange={e => { setName(e.target.value); setError('') }}
-            onKeyDown={e => e.key==='Enter' && handlePlayer()}
-            style={{ width:'100%',background:'#07090f',border:'1px solid #1e2d45',
-              borderRadius:8,padding:'10px 14px',color:'#e8eaf0',
-              fontFamily:'DM Mono,monospace',fontSize:'0.9rem',outline:'none',marginBottom:12 }}
-          />
-          <button onClick={handlePlayer} disabled={!name.trim()||loading}
-            style={{ width:'100%',background: name.trim()&&!loading?'#f59e0b':'#1e2d45',
-              border:'none',borderRadius:8,padding:'11px',
-              color: name.trim()&&!loading?'#07090f':'#4b617a',
-              fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:'0.95rem',
-              letterSpacing:'0.06em',cursor: name.trim()&&!loading?'pointer':'not-allowed',
-              transition:'all 0.15s' }}>
-            {loading?'ENTRANDO...':'ENTRAR A LA POLLA →'}
-          </button>
-        </div>
 
+<button
+  onClick={handlePlayer}
+  disabled={!name.trim() || !pin.trim() || loading}
+  style={{
+    width:'100%',
+    background:name.trim() && pin.trim() && !loading
+      ? '#f59e0b'
+      : '#1e2d45',
+    border:'none',
+    borderRadius:8,
+    padding:'11px',
+    color:name.trim() && pin.trim() && !loading
+      ? '#07090f'
+      : '#4b617a',
+    fontFamily:'Oswald,sans-serif',
+    fontWeight:700,
+    fontSize:'0.95rem',
+    letterSpacing:'0.06em',
+    cursor:name.trim() && pin.trim() && !loading
+      ? 'pointer'
+      : 'not-allowed'
+  }}
+>
+  {loading ? 'ENTRANDO...' : 'ENTRAR A LA POLLA →'}
+</button>
         {/* Admin login */}
         <div style={{ background:'#0c111d',border:'1px solid #1e2d45',borderRadius:12,padding:'20px' }}>
           <div style={{ fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:'0.65rem',
