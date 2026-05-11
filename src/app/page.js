@@ -242,6 +242,32 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
           </div>
           <input
             placeholder="Tu nombre..."
+              <input
+  placeholder="Nombre"
+  value={name}
+  onChange={e=>setName(e.target.value)}
+  style={{
+    width:'100%',
+    padding:'14px',
+    borderRadius:10
+  }}
+/>
+
+<input
+  type="password"
+  placeholder="PIN"
+  value={pin}
+  onChange={e=>setPin(e.target.value)}
+  style={{
+    width:'100%',
+    padding:'14px',
+    borderRadius:10,
+    border:'1px solid #1e2d45',
+    background:'#0f1724',
+    color:'#fff',
+    marginTop:12
+  }}
+/>
           <input
   type="password"
   placeholder="PIN"
