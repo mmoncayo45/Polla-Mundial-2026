@@ -362,7 +362,16 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
       const pred = allPreds[p.id]?.find(x => x.match_id === m.id)
       const real = results.find(r => r.match_id === m.id)
       const pts = calcPoints(pred, real)
-      if (pts!==null){ total+=pts; played++; if(pts===3)exact++; else if(pts>=1)correct++ }
+      if (pts !== null) {
+        total += pts
+        played++
+
+        if (pts === 5) {
+          exact++
+          } else if (pts >= 1) {
+          correct++
+        }
+      }
     })
     return { ...p, total, exact, correct, played }
   }).sort((a,b) => b.total - a.total)
