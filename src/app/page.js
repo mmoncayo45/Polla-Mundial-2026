@@ -135,16 +135,82 @@ function MatchRow({ match, homeVal, awayVal, onHomeChange, onAwayChange, locked,
 function LoginScreen({ onPlayerLogin, onAdminLogin }) {
   const [name, setName] = useState('')
   const [pin,setPin] = useState('')
-  const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function handlePlayer() {
-    if (!name.trim()) return
-    setLoading(true); setError('')
-    await onPlayerLogin(name.trim())
-    setLoading(false)
+
+  if (!name.trim()) {
+    setError('Ingrese nombre')
+    return
   }
+
+  if (!pin.trim()) {
+    setError('Ingrese PIN')
+    return
+  }
+
+  setLoading(true)
+  setError('')
+
+  try {
+
+    // Buscar jugador existente
+    const { data:existing, error:findError } =
+      await supabase
+        .from('players')
+        .select('*')
+        .eq('name', name.trim())
+        .maybeSingle()
+
+    if (findError) {
+      setError(findError.message)
+      setLoading(false)
+      return
+    }
+
+    // Crear nuevo jugador
+    if (!existing) {
+
+      const { data:newPlayer, error:createError } =
+        await supabase
+          .from('players')
+          .insert({
+            name: name.trim(),
+            pin: pin
+          })
+          .select()
+          .single()
+
+      if (createError) {
+        setError(createError.message)
+        setLoading(false)
+        return
+      }
+
+      await onPlayerLogin(newPlayer.name)
+
+      setLoading(false)
+      return
+    }
+
+    // Validar PIN
+    if (existing.pin !== pin) {
+      setError('PIN incorrecto')
+      setLoading(false)
+      return
+    }
+
+    await onPlayerLogin(existing.name)
+
+  } catch(err) {
+
+    setError(err.message)
+
+  }
+
+  setLoading(false)
+}
 
   async function handleAdmin() {
     if (pin !== ADMIN_PIN) { setError('PIN incorrecto'); return }
@@ -176,6 +242,21 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
           </div>
           <input
             placeholder="Tu nombre..."
+          <input
+  type="password"
+  placeholder="PIN"
+  value={pin}
+  onChange={e=>setPin(e.target.value)}
+  style={{
+    width:'100%',
+    padding:'14px',
+    borderRadius:10,
+    border:'1px solid #1e2d45',
+    background:'#0f1724',
+    color:'#fff',
+    marginTop:12
+  }}
+/>
             value={name}
             onChange={e => { setName(e.target.value); setError('') }}
             onKeyDown={e => e.key==='Enter' && handlePlayer()}
