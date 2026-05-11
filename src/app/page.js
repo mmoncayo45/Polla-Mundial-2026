@@ -348,8 +348,8 @@ function LoginScreen({ onPlayerLogin, onAdminLogin }) {
           ⚽ +1 pt — Por cada equipo con goles exactos<br/>
         </div>
       </div>
-    </div>
-  )
+)
+
 }
 
 // ─── LEADERBOARD ─────────────────────────────────────────────────────────────
