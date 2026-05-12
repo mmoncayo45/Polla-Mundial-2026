@@ -507,15 +507,21 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
           (predDiff === 0 && realDiff === 0)
       
         if (homeExact && awayExact) {
-          exact++
-        }
-      
-        if (resultCorrect) {
-          correct++
-        }
-      
-        if (homeExact) goals++
-        if (awayExact) goals++
+
+            exact++
+          
+          } else {
+          
+            // Resultado correcto SOLO si no fue exacto
+            if (resultCorrect) {
+              correct++
+            }
+          
+            // Goles exactos SOLO fuera del exacto
+            if (homeExact) goals++
+          
+            if (awayExact) goals++
+}
       }
     })
     return { ...p, total, exact, correct, goals, played }
