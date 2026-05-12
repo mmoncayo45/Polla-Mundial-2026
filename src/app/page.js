@@ -486,42 +486,48 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
       const real = results.find(r => r.match_id === m.id)
       const pts = calcPoints(pred, real)
       if (pts !== null) {
+      
         total += pts
         played++
       
         const homeExact =
-          pred?.home_score === real?.home_score
+          pred?.home_goals === real?.home_goals
       
         const awayExact =
-          pred?.away_score === real?.away_score
+          pred?.away_goals === real?.away_goals
       
         const predDiff =
-          pred.home_score - pred.away_score
+          pred?.home_goals - pred?.away_goals
       
         const realDiff =
-          real.home_score - real.away_score
+          real?.home_goals - real?.away_goals
       
         const resultCorrect =
           (predDiff > 0 && realDiff > 0) ||
           (predDiff < 0 && realDiff < 0) ||
           (predDiff === 0 && realDiff === 0)
       
+        // Marcador exacto
         if (homeExact && awayExact) {
-
-            exact++
-          
-          } else {
-          
-            // Resultado correcto SOLO si no fue exacto
-            if (resultCorrect) {
-              correct++
-            }
-          
-            // Goles exactos SOLO fuera del exacto
-            if (homeExact) goals++
-          
-            if (awayExact) goals++
-}
+      
+          exact++
+      
+        } else {
+      
+          // Resultado correcto SIN exacto
+          if (resultCorrect) {
+            correct++
+          }
+      
+          // Goles exactos SOLO fuera del exacto
+          if (homeExact) {
+            goals++
+          }
+      
+          if (awayExact) {
+            goals++
+          }
+        }
       }
     })
     return { ...p, total, exact, correct, goals, played }
