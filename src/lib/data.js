@@ -84,7 +84,7 @@ export const MATCHES = [
 // Lock 5 minutes before kickoff
 export function isLocked(match) {
   const ko = new Date(match.ko)
-  return true
+  return false
 }
 
 // Scoring system
