@@ -480,7 +480,7 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
   const [expanded, setExpanded] = useState(null)
 
   const board = players.map(p => {
-    let total=0, exact=0, correct=0, played=0
+    let total=0, exact=0, correct=0, goals=0, played=0
     MATCHES.forEach(m => {
       const pred = allPreds[p.id]?.find(x => x.match_id === m.id)
       const real = results.find(r => r.match_id === m.id)
@@ -488,15 +488,37 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
       if (pts !== null) {
         total += pts
         played++
-
-        if (pts === 5) {
+      
+        const homeExact =
+          pred?.home_score === real?.home_score
+      
+        const awayExact =
+          pred?.away_score === real?.away_score
+      
+        const predDiff =
+          pred.home_score - pred.away_score
+      
+        const realDiff =
+          real.home_score - real.away_score
+      
+        const resultCorrect =
+          (predDiff > 0 && realDiff > 0) ||
+          (predDiff < 0 && realDiff < 0) ||
+          (predDiff === 0 && realDiff === 0)
+      
+        if (homeExact && awayExact) {
           exact++
-          } else if (pts >= 1) {
+        }
+      
+        if (resultCorrect) {
           correct++
         }
+      
+        if (homeExact) goals++
+        if (awayExact) goals++
       }
     })
-    return { ...p, total, exact, correct, played }
+    return { ...p, total, exact, correct, goals, played }
   }).sort((a,b) => b.total - a.total)
 
   if (board.length === 0)
@@ -539,13 +561,14 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
 
       {/* Table */}
       <div style={{ background:'#111827',border:'1px solid #1e2d45',borderRadius:12,overflow:'hidden',marginBottom:24 }}>
-        <div style={{ display:'grid',gridTemplateColumns:'36px 1fr 56px 56px 56px 72px',
+        <div style={{ display:'grid',gridTemplateColumns:'36px 1fr 56px 56px 56px 56px 72px',
           padding:'8px 14px',borderBottom:'1px solid #1e2d45',
           color:'#4b617a',fontSize:'0.6rem',letterSpacing:'0.12em',
           textTransform:'uppercase',fontFamily:'Oswald,sans-serif' }}>
           <div>#</div><div>Apostador</div>
           <div style={{ textAlign:'center' }}>⭐</div>
           <div style={{ textAlign:'center' }}>✅</div>
+          <div style={{ textAlign:'center' }}>⚽</div>
           <div style={{ textAlign:'center' }}>Jug.</div>
           <div style={{ textAlign:'right' }}>PTS</div>
         </div>
@@ -562,7 +585,7 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
           return (
             <div key={p.id}>
               <div onClick={() => setExpanded(isOpen?null:p.id)}
-                style={{ display:'grid',gridTemplateColumns:'36px 1fr 56px 56px 56px 72px',
+                style={{ display:'grid',gridTemplateColumns:'36px 1fr 56px 56px 56px 56px 72px',
                   padding:'11px 14px',borderBottom:'1px solid #1e2d45',
                   background: isMe?'#f59e0b0a':i===0?'#f59e0b06':'transparent',
                   alignItems:'center',cursor:'pointer',transition:'background 0.15s' }}>
@@ -573,9 +596,19 @@ function Leaderboard({ players, allPreds, results, currentPlayerId }) {
                   {isMe && <span style={{ background:'#f59e0b22',color:'#f59e0b',
                     borderRadius:4,padding:'1px 6px',fontSize:'0.55rem',letterSpacing:'0.08em' }}>TÚ</span>}
                 </div>
-                <div style={{ textAlign:'center',color:'#f59e0b',fontWeight:700,fontSize:'0.85rem' }}>{p.exact}</div>
-                <div style={{ textAlign:'center',color:'#22c55e',fontWeight:700,fontSize:'0.85rem' }}>{p.correct}</div>
-                <div style={{ textAlign:'center',color:'#4b617a',fontSize:'0.85rem' }}>{p.played}</div>
+               <div style={{ textAlign:'center',color:'#f59e0b',fontWeight:700,fontSize:'0.85rem' }}>{p.exact}</div>
+
+                <div style={{ textAlign:'center',color:'#22c55e',fontWeight:700,fontSize:'0.85rem' }}>
+                  {p.correct}
+                </div>
+                
+                <div style={{ textAlign:'center',color:'#38bdf8',fontWeight:700,fontSize:'0.85rem' }}>
+                  {p.goals}
+                </div>
+                
+                <div style={{ textAlign:'center',color:'#4b617a',fontSize:'0.85rem' }}>
+                  {p.played}
+                </div>
                 <div style={{ textAlign:'right',fontFamily:'Oswald,sans-serif',fontWeight:700,
                   fontSize:'1rem',color: isMe?'#f59e0b':i===0?'#f59e0b':'#e8eaf0' }}>{p.total}</div>
               </div>
