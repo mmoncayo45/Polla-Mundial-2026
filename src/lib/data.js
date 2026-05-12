@@ -7,10 +7,10 @@ export const GROUP_COLORS = {
 export const ADMIN_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || "MUNDIAL2026"
 
 export const MATCHES = [
-  { id:1,  group:"A", home:"México 🇲🇽",          away:"Sudáfrica 🇿🇦",       date:"May 12", ko:"2026-05-11T12:00:00Z" },
-  { id:2,  group:"A", home:"Corea del Sur 🇰🇷",   away:"Chequia 🇨🇿",         date:"May 12", ko:"2026-05-11T12:00:00Z" },
-  { id:3,  group:"A", home:"México 🇲🇽",          away:"Corea del Sur 🇰🇷",   date:"May 12", ko:"2026-05-11T12:00:00Z" },
-  { id:4,  group:"A", home:"Chequia 🇨🇿",         away:"Sudáfrica 🇿🇦",       date:"May 12", ko:"2026-05-11T12:00:00Z" },
+  { id:1,  group:"A", home:"México 🇲🇽",          away:"Sudáfrica 🇿🇦",       date:"Jun 11", ko:"2026-06-12T01:00:00Z" },
+  { id:2,  group:"A", home:"Corea del Sur 🇰🇷",   away:"Chequia 🇨🇿",         date:"Jun 11", ko:"2026-06-12T03:00:00Z" },
+  { id:3,  group:"A", home:"México 🇲🇽",          away:"Corea del Sur 🇰🇷",   date:"Jun 15", ko:"2026-06-16T00:00:00Z" },
+  { id:4,  group:"A", home:"Chequia 🇨🇿",         away:"Sudáfrica 🇿🇦",       date:"Jun 15", ko:"2026-06-16T00:00:00Z" },
   { id:5,  group:"A", home:"México 🇲🇽",          away:"Chequia 🇨🇿",         date:"Jun 19", ko:"2026-06-19T21:00:00Z" },
   { id:6,  group:"A", home:"Sudáfrica 🇿🇦",       away:"Corea del Sur 🇰🇷",   date:"Jun 19", ko:"2026-06-19T21:00:00Z" },
   { id:7,  group:"B", home:"Canadá 🇨🇦",          away:"Bosnia-Herz. 🇧🇦",    date:"Jun 12", ko:"2026-06-12T22:00:00Z" },
